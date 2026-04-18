@@ -6,10 +6,12 @@ SipShop is a web application that serves as a directory and storefront for bever
 
 ## 📷 Demo
 
-<!-- Replace these placeholders with the actual paths/names of your exact screenshot and screen recording files -->
-![SipShop Demo Screenshot](./public/screenshot.png)
-
-*Watch the [Demo Video](./public/demo.mp4) for a complete walkthrough.*
+![SipShop Demo Screenshot 1](./public/models/demo/image.png)
+![SipShop Demo Screenshot 2](./public/models/demo/image%20copy.png)
+![SipShop Demo Screenshot 3](./public/models/demo/image%20copy%202.png)
+![SipShop Demo Screenshot 4](./public/models/demo/image%20copy%203.png)
+![SipShop Demo Screenshot 5](./public/models/demo/image%20copy%204.png)
+![SipShop Demo Screenshot 6](./public/models/demo/image%20copy%205.png)
 
 ---
 
