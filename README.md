@@ -1,56 +1,60 @@
-# SipShop (SIPSIP) 🥤
+# SipShop (SIPSIP)
 
-Discover handcrafted, premium beverages including smoothies, cold brews, milk teas, kombuchas, and more! SipShop is a beautifully designed, modern web application that provides users with an immersive browsing and shopping experience for buying artisanal drinks.
+SipShop is a web application that serves as a directory and storefront for beverage products. It provides a browsing and shopping interface for items such as smoothies, cold brews, milk teas, and kombuchas.
 
 ---
 
-## 📖 Product Intro
+## 📷 Demo
 
-SipShop is designed to be the ultimate premium beverage directory and storefront. At first glance, users are greeted with a stunning 3D interactive hero scene that reacts to scroll events. Once past the hero section, users enter a robust and lightning-fast product search interface packed with "ProMax" level filters, sorting, and pagination logic to quickly find the perfect drink matching their mood, budget, or dietary needs.
+<!-- Replace these placeholders with the actual paths/names of your exact screenshot and screen recording files -->
+![SipShop Demo Screenshot](./public/screenshot.png)
+
+*Watch the [Demo Video](./public/demo.mp4) for a complete walkthrough.*
 
 ---
 
 ## ✨ Features
 
-- **Interactive 3D Hero Scene**: Immersive landing page built using `react-three-fiber` and Three.js with smooth transitions powered by Framer Motion and GSAP.
-- **Advanced Product Search**: Case-insensitive, multi-field search logic to easily pinpoint products by name or description.
-- **ProMax Filtering System**:
-  - Dual-thumb Price Range Sliders
-  - Minimum Rating constraint selections
-  - "Stock Status" filtering (In Stock, Low Stock, Out of Stock)
-  - Categories and Tags (Featured, New Arrivals, On Sale)
-- **Advanced Sorting**: Sort items by rating, price, stock availability, date, and alphabetical order.
-- **Hybrid Pagination**: A fully custom "ProMax" frosted pill pagination bar that includes an **Infinite Scroll Toggle**, allowing users to freely switch between traditional page-by-page viewing or smooth auto-loading. 
-- **Modern Authentication**: User authentication backed by Supabase and NextAuth (Credentials & OAuth flows supported).
+- **3D Hero Interface**: A landing section that implements 3D elements reacting to user scroll inputs.
+- **Product Search**: A multi-field search engine supporting case-insensitive queries for products and descriptions.
+- **Filtering System**:
+  - Dual-thumb price range sliders.
+  - Minimum rating threshold selection.
+  - Stock status filtering (In Stock, Low Stock, Out of Stock).
+  - Category and tag sorting (Featured, New Arrivals, On Sale).
+- **Sorting Mechanism**: Organizes results by rating, price, stock availability, date added, and alphabetical order.
+- **Pagination Structure**: A hybrid navigation system that includes a toggle function to switch between traditional page-by-page viewing and continuous infinite scroll loading.
+- **Authentication**: User login and registration integrated with Supabase and NextAuth, supporting both credentials and OAuth providers.
 
 ---
 
-## 🛠 UI/UX Technologies 
+## 🛠 Technologies Used
 
-The application uses a bleeding-edge technology stack focusing heavily on design aesthetics, animation, and performance:
+### Frontend & UI
+- **Framework**: Next.js 16 (App Router), React 19
+- **Styling**: Tailwind CSS v4
+- **3D Integration**: Three.js, `@react-three/fiber`, `@react-three/drei`
+- **Animations**: GSAP (`@gsap/react`), Framer Motion (`motion`)
+- **Iconography**: Lucide React
 
-- **Framework**: Next.js 16 (App Router) with React 19
-- **Styling**: Tailwind CSS v4 for utility-first responsive design
-- **3D Graphics**: Three.js, `@react-three/fiber`, and `@react-three/drei` for the interactive 3D hero experience
-- **Animations**: GSAP (`@gsap/react`) & Framer Motion (`motion`) for intricate scroll reveals, text-splitting, and layout animations
-- **Icons**: Lucide React for clean, consistent SVG iconography
-- **Database / ORM**: Prisma Client with continuous synchronization using Neon Serverless Postgres
-- **Auth**: NextAuth & `@supabase/supabase-js`
+### Backend & Data
+- **Database/ORM**: Prisma Client, Neon Serverless Postgres
+- **Authentication**: NextAuth, `@supabase/supabase-js`
 
 ---
 
-## 🚀 How to Download and Run
+## 🚀 How to Run the Application
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/JuliusNoelMiranda18/SIPSIP.git
 cd SIPSIP
 ```
 
-### 2. Install dependencies
+### 2. Install Dependencies
 
-You can use npm, yarn, pnpm, or bun:
+Choose one of the following package managers to install dependencies:
 
 ```bash
 npm install
@@ -60,29 +64,30 @@ yarn install
 pnpm install
 ```
 
-### 3. Setup Environment Variables
+### 3. Configure Environment Variables
 
-Create a `.env` file in the root directory and ensure you configure the following keys:
-- `DATABASE_URL` (Your Neon Postgres connection string)
-- NextAuth variables (`NEXTAUTH_SECRET`, `NEXTAUTH_URL`)
-- Supabase endpoints and keys (if utilized beyond NextAuth)
+Create a `.env` file in the root directory with the following variables:
+- `DATABASE_URL`: Connection string for Neon Postgres.
+- `NEXTAUTH_SECRET`: Secret key for NextAuth.
+- `NEXTAUTH_URL`: Base domain URL of the application.
+- Supabase endpoints and keys (if applicable beyond standard NextAuth setups).
 
 *(Consult `.env.example` if available in the repository)*
 
-### 4. Initialize Database & Prisma
+### 4. Initialize Database
 
-Generate the Prisma Client and push the schema/seed data to your database:
+Generate the Prisma Client and migrate the schema to the database. Optionally, seed the initial data:
 
 ```bash
 npx prisma generate
 npm run db:push
-npm run db:seed    # Optional: if you have default beverages to load
+npm run db:seed
 ```
 
-### 5. Start the Development Server
+### 5. Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to experience SipShop!
+Navigate to [http://localhost:3000](http://localhost:3000) to view the application in the browser.
