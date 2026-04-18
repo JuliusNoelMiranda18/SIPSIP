@@ -93,7 +93,7 @@ function ReviewModal({
         style={{
           background: '#ffffff',
           borderRadius: '24px',
-          width: '100%', maxWidth: '560px',
+          width: '100%', maxWidth: '640px',
           maxHeight: '90vh',
           overflow: 'hidden',
           display: 'flex', flexDirection: 'column',

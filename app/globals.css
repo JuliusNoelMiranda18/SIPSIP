@@ -874,6 +874,23 @@ body {
   letter-spacing: 0.07em;
   margin-bottom: 0.25rem;
 }
+
+.product-category-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.63rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #51688B;
+  background: rgba(110, 136, 176, 0.1);
+  border: 1px solid rgba(110, 136, 176, 0.2);
+  padding: 0.18rem 0.55rem;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+  font-family: var(--font-inter), sans-serif;
+}
 .product-name {
   font-family: var(--font-jakarta), sans-serif;
   font-size: 0.92rem;
@@ -892,7 +909,7 @@ body {
   color: #6b7280;
   line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;

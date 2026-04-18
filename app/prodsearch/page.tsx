@@ -26,7 +26,7 @@ const STOCK_OPTIONS: { value: StockFilter; label: string }[] = [
 
 const PRICE_MIN = 0
 const PRICE_MAX = 20
-const PAGE_SIZE = 12
+const PAGE_SIZE = 9
 
 /* ─────────────────────────────────────────────────────────────
    PriceSlider — Keep visual representation, remove effect dependency
@@ -201,6 +201,7 @@ export default function ProductSearchPage() {
   const [page,      setPage]      = useState(1)
   const [showAll,   setShowAll]   = useState(false)
   const [inputPage, setInputPage] = useState('1')
+  const [infiniteScroll, setInfiniteScroll] = useState(false)
 
   /* mobile pane */
   const [paneOpen, setPaneOpen] = useState(false)
@@ -290,14 +291,16 @@ export default function ProductSearchPage() {
       sortedProducts.sort((a, b) => b.averageRating - a.averageRating)
     }
 
-    // 4. PAGINATION SLICING — accumulates products for infinite scroll
-    // Show all products from page 1 up to current page
+    // 4. PAGINATION SLICING
+    // If infinite auto-load is ON, we show all products from page 1 up to current page.
+    // If OFF, we behave like a traditional paginator and only show the 9 products for that specific page.
+    const start = showAll || infiniteScroll ? 0 : (page - 1) * PAGE_SIZE
     const end = showAll ? sortedProducts.length : page * PAGE_SIZE
 
     // 5. PREPARE THE FINAL RENDER
     return {
       total: filteredProducts.length,
-      products: sortedProducts.slice(0, end)
+      products: sortedProducts.slice(start, end)
     }
     
   // DEPENDENCY ARRAY
@@ -307,7 +310,7 @@ export default function ProductSearchPage() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && infiniteScroll) {
           setPage(prev => (prev * PAGE_SIZE < total ? prev + 1 : prev))
         }
       },
@@ -315,7 +318,7 @@ export default function ProductSearchPage() {
     )
     if (observerTarget.current) observer.observe(observerTarget.current)
     return () => observer.disconnect()
-  }, [total])
+  }, [total, infiniteScroll])
 
 
   /* ── Helpers ─────────────────────────────────────────────── */
@@ -616,7 +619,7 @@ export default function ProductSearchPage() {
 
                   <span style={{ fontSize: '0.73rem', color: '#9ca3af', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Go</span>
                   <input
-                    type="number" min="1" max={maxPage}
+                    type="text" inputMode="numeric" pattern="[0-9]*"
                     value={inputPage}
                     onChange={e => setInputPage(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && goToPage()}
@@ -625,10 +628,7 @@ export default function ProductSearchPage() {
                       border: '1.5px solid rgba(110,136,176,0.22)', borderRadius: '12px',
                       fontSize: '0.88rem', fontWeight: 700, color: '#1e3a5f',
                       background: '#f8fafc', outline: 'none',
-                      fontFamily: 'var(--font-inter), sans-serif',
-                      MozAppearance: 'textfield',
-                      WebkitAppearance: 'none',
-                      appearance: 'textfield'
+                      fontFamily: 'var(--font-inter), sans-serif'
                     } as React.CSSProperties}
                   />
                   <button
@@ -647,6 +647,32 @@ export default function ProductSearchPage() {
                     onMouseOver={e => { e.currentTarget.style.background='#2f5a8a'; e.currentTarget.style.transform='translateY(-1px)' }}
                     onMouseOut={e => { e.currentTarget.style.background='#1e3a5f'; e.currentTarget.style.transform='translateY(0)' }}
                   >GO</button>
+
+                  <div style={{ width: '1px', height: '24px', background: 'rgba(110,136,176,0.18)', margin: '0 0.3rem' }} />
+
+                  {/* Infinite Scroll Toggle */}
+                  <button
+                    onClick={() => setInfiniteScroll(!infiniteScroll)}
+                    title="Toggle Auto-Load"
+                    style={{
+                      height: '42px', padding: '0 0.95rem',
+                      borderRadius: '12px',
+                      background: infiniteScroll ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : '#f8fafc',
+                      color: infiniteScroll ? '#fff' : '#64748b',
+                      border: infiniteScroll ? 'none' : '1.5px solid rgba(110,136,176,0.22)',
+                      cursor: 'pointer',
+                      fontSize: '0.78rem', fontWeight: 700,
+                      letterSpacing: '0.02em',
+                      boxShadow: infiniteScroll ? '0 4px 14px rgba(16,185,129,0.25)' : 'none',
+                      transition: 'all 0.2s',
+                      display: 'flex', alignItems: 'center', gap: '0.35rem',
+                      fontFamily: 'var(--font-inter), sans-serif'
+                    }}
+                    onMouseOver={e => { if (!infiniteScroll) e.currentTarget.style.background='#f1f5f9' }}
+                    onMouseOut={e => { if (!infiniteScroll) e.currentTarget.style.background='#f8fafc' }}
+                  >
+                    ∞ {infiniteScroll ? 'ON' : 'OFF'}
+                  </button>
                 </div>
 
                 {/* Infinite scroll sentinel */}

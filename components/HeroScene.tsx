@@ -175,12 +175,16 @@ function AnimatedDrink({
 
     if (config.appearsAt > 0) {
       const appear = smoothstepGlobal(0.2, 0.3, p)
-      ref.current.scale.setScalar(appear * disappear * config.finalScale * config.baseScale)
+      const targetScale = appear * disappear * config.finalScale * config.baseScale
+      ref.current.scale.setScalar(targetScale)
+      ref.current.visible = targetScale > 0.0001
     } else {
       const entranceScale = entranceEase
       const heroToFinal = smoothstepGlobal(0.15, 0.35, p)
       const currentScale = THREE.MathUtils.lerp(config.heroScale, config.finalScale, heroToFinal)
-      ref.current.scale.setScalar(entranceScale * currentScale * disappear * config.baseScale)
+      const targetScale = entranceScale * currentScale * disappear * config.baseScale
+      ref.current.scale.setScalar(targetScale)
+      ref.current.visible = targetScale > 0.0001
     }
   })
 
@@ -204,9 +208,12 @@ function RollingPepsi({ scrollProgress }: { scrollProgress: React.RefObject<numb
     if (!ref.current) return
     const p = scrollProgress.current ?? 0
     if (p < 0.34) {
-      ref.current.scale.setScalar(0)
+      ref.current.visible = false
       return
     }
+    
+    // Ensure visibility is reset if we enter active range
+    ref.current.visible = true
 
     // ─── PREPARATION PHASE (0.35 to 0.42) ───
     // Fly from the group 'try all' position up to the starting roll position
@@ -285,7 +292,7 @@ function RollingPepsi({ scrollProgress }: { scrollProgress: React.RefObject<numb
 
 function Bubbles({ scrollProgress }: { scrollProgress: React.RefObject<number> }) {
   const meshRef = useRef<THREE.InstancedMesh>(null!)
-  const count = 120 // Increased bubble count
+  const count = 40 // Reduced heavily from 120 to fix rendering lag
   const dummy = useMemo(() => new THREE.Object3D(), [])
 
   const particles = useMemo(() => {
@@ -350,10 +357,10 @@ function Scene({ scrollProgress }: { scrollProgress: React.RefObject<number> }) 
   return (
     <>
       <ambientLight intensity={1.2} />
-      <directionalLight position={[5, 8, 5]} intensity={1.8} castShadow />
+      <directionalLight position={[5, 8, 5]} intensity={1.5} />
       <directionalLight position={[-3, 4, 2]} intensity={0.8} />
       <spotLight position={[0, 10, 0]} intensity={0.4} angle={0.5} penumbra={1} />
-      <Environment preset="city" environmentIntensity={0.5} />
+      <Environment preset="city" environmentIntensity={0.5} resolution={256} />
 
       <Bubbles scrollProgress={scrollProgress} />
       <RollingPepsi scrollProgress={scrollProgress} />
@@ -535,7 +542,7 @@ export default function HeroScene() {
         <Canvas
           camera={{ position: [0, 0, 7], fov: 42 }}
           style={{ position: 'absolute', inset: 0, zIndex: 1 }}
-          dpr={[1, 1.5]}
+          dpr={[1, 1]}
           onCreated={handleCreated}
         >
           <Suspense fallback={null}>
